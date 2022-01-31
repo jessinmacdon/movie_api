@@ -1,12 +1,13 @@
 const express = require('express'),
 morgan = require('morgan');
 
-//adding express in the app
+//passing/invoking express iin the app
 const app = express();
 
 //passing morgan for logging
 app.use(morgan('common'));
 
+//adding top movies list(array)
 let topMovies = [
   {
     'Title': "Black Panther",
@@ -65,22 +66,26 @@ let topMovies = [
   },
 ];
 
-
+//route url - Home page
 app.get('/', (reg, res) => {
   res.send('Welcome to my Movie app');
 });
 
+//viewing movies list - json
 app.get('/movies', (req, res) => {
   res.json(topMovies);
 });
 
+//using express.static to display documentation.html file
 app.use(express.static('public'));
 
+//error handler
 app.use((err, req, res, next) => {
   cosole.error(err.stack);
   res.status(500).send('Something went wrong!');
 });
 
+//action listener for port 8080
 app.listen(8080, () => {
   console.log('Your app is listening on Port 8080');
 });
