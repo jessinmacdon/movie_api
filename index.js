@@ -1,5 +1,5 @@
 const express = require('express'),
-morgan = require('morgan'),
+morgan = require('morgan');
 
 //adding express in the app
 const app = express();
@@ -7,10 +7,10 @@ const app = express();
 //passing morgan for logging
 app.use(morgan('common'));
 
-let movies = [
+let topMovies = [
   {
     'Title': "Black Panther",
-    'Genres': {"names": "action", "name": "adventure"},
+    'Genres': {"name": "action", "name": "adventure"},
     'Director': {"name": 'Ryan Coogler'},
     'Country': {"name": "U.S.A"},
   },
@@ -68,4 +68,19 @@ let movies = [
 
 app.get('/', (reg, res) => {
   res.send('Welcome to my Movie app');
+});
+
+app.get('/movies', (req, res) => {
+  res.json(topMovies);
+});
+
+app.use(express.static('public'));
+
+app.use((err, req, res, next) => {
+  cosole.error(err.stack);
+  res.status(500).send('Something went wrong!');
+});
+
+app.listen(8080, () => {
+  console.log('Your app is listening on Port 8080');
 });
