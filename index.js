@@ -21,94 +21,15 @@ app.use(morgan('common'));
 //passing/invoking body-paser
 app.use(bodyParser.json());
 
+app.use(bodyParser.urlencoded({ extended: true }));
+
+let auth = require('./auth')(app);
+
+const passport = require('passport');
+require('passport');
+
 //using express.static to display documentation.html file
 app.use(express.static('/public'));
-
-//adding users / in-memory
-/*let users = [
-  {
-    id: 1,
-    name: 'Macdon',
-    favouriteMovies: ['The Matrix']
-  },
-
-  {
-    id: 2,
-    name: 'Jessin',
-    fovouriteMovies: []
-  },
-
-  {
-    id: 3,
-    name: 'Omalle',
-    favouriteMovies: ['BlackPanther']
-  },
-
-  {
-    id: 4,
-    name: 'Jameson',
-    favouriteMovies: ['Fight Club']
-  },
-]
-
-//adding top movies list(array)
-let topMovies = [
-  {
-    "Title": "Black Panther",
-    "Genre": {"Name": "Action"},
-    "Director": {"Name": "Ryan Coogler"},
-    "Country": {"Name": "U.S.A"}
-  },
-
-  {
-    "Title": "The Avengers Series",
-    "Genre": {"Name": "Sci-fi"},
-    "Director": {"Name": "Kevin Feige"},
-    "Country": {"Name": "U.S.A"}
-  },
-
-  {
-    "Title": "Star Wars",
-    "Genre": {"Name": "Sci-fi"},
-    "Director": {"Name": "George Lucas"},
-    "Country": {"Name": "U.S.A"}
-  },
-
-  {
-    "Title": "The Dark Knight",
-    "Genre": {"Name": "Action"},
-    "Director": {"Name": "Christopher Nolan"},
-    "Country": {"Name": "U.S.A"}
-  },
-
-  {
-    "Title": "The Matrix",
-    "Genre": {"Name": "Sci-fi"},
-    "Director": [{"Name": "Lana Wachowski"}, {"Name": "Lilly Wachowski"}],
-    "Country": {"Name": "U.S.A"}
-  },
-
-  {
-    "Title": "Inception",
-    "Genre": {"Name": "Action"},
-    "Director": {"Name": "Christopher Nolan"},
-    "Country": {"Name": "U.S.A"}
-  },
-
-  {
-    "Title": "The Equalizer",
-    "Genre": {"Name": "Action"},
-    "Director": {"Name": "Harry Gregson-Williams"},
-    "Country": {"Name": "U.S.A"}
-  },
-
-  {
-    "Title": "12 Years A Slave",
-    "Genre": {"Name": "Drama"},
-    "Director": {"Name": "Steve McQueen"},
-    "Country": {"Name": "U.S.A"}
-  },
-];*/
 
 //route url - Home page
 app.get('/', (req, res) => {
@@ -116,12 +37,12 @@ app.get('/', (req, res) => {
 });
 
 // serving documentation - express.static
-app.get('/documentation', (req, res) => {
+app.get('/documentation', passport.authenticate('jwt', {session: false}), (req, res) => {
     res.sendFile(__dirname, 'documentation.html');
 });
 
 //get all users
-app.get('/users', (req, res) => {
+app.get('/users', passport.authenticate('jwt', {session: false}), (req, res) => {
   Users.find()
     .then((users) => {
       res.status(200).json(users);
@@ -133,7 +54,7 @@ app.get('/users', (req, res) => {
 });
 
 //return a (one) user
-app.get('/users/:Username', (req, res) => {
+app.get('/users/:Username', passport.authenticate('jwt', {session: false}), (req, res) => {
   Users.findOne({ Username: req.body.Username })
     .then((users) => {
         res.json(users);
@@ -172,7 +93,7 @@ app.post('/users', (req, res) => {
 });
 
 //User updates - updating user name
-app.put('/users/:Username', (req, res) => {
+app.put('/users/:Username', passport.authenticate('jwt', {session: false}), (req, res) => {
   Users.findOneAndUpdate({ Username: req.body.Username },
   { $set:
     {
@@ -194,7 +115,7 @@ app.put('/users/:Username', (req, res) => {
 });
 
 //deleting user account
-app.delete('/users/:Username', (req, res) => {
+app.delete('/users/:Username', passport.authenticate('jwt', {session: false}), (req, res) => {
   Users.findOneAndRemove({ Username: req.body.Username })
     .then((user) => {
       if (!user) {
@@ -210,7 +131,7 @@ app.delete('/users/:Username', (req, res) => {
 });
 
 //viewing movies list - json
-app.get('/movies', (req, res) => {
+app.get('/movies', passport.authenticate('jwt', {session: false}), (req, res) => {
   Movies.find()
     .then((movies) => {
       res.status(200).json(movies);
@@ -222,7 +143,7 @@ app.get('/movies', (req, res) => {
 });
 
 // gets all movies - by Title
-app.get('/movies/:Title', (req, res) => {
+app.get('/movies/:Title', passport.authenticate('jwt', {session: false}), (req, res) => {
   Movies.findOne({ Title: req.params.Title })
     .then((movie) => {
       res.json(movie);
@@ -234,7 +155,7 @@ app.get('/movies/:Title', (req, res) => {
 });
 
 //user adding new movie to their list of favourite movies
-app.post('/users/:Username/movies/:MovieID', (req, res) => {
+app.post('/users/:Username/movies/:MovieID', passport.authenticate('jwt', {session: false}), (req, res) => {
   Users.findOneAndUpdate ({ Username: req.params.Username},
   {
     $push: { FavouriteMovies: req.params.MovieID }
@@ -251,7 +172,7 @@ app.post('/users/:Username/movies/:MovieID', (req, res) => {
 });
 
 //user removing movies from their favourite movies list
-app.delete('/users/:Username/movies/:MovieID', (req, res) => {
+app.delete('/users/:Username/movies/:MovieID', passport.authenticate('jwt', {session: false}), (req, res) => {
   Users.findOneAndUpdate ({ Username: req.params.Username},
   {
     $pull: { FavouriteMovies: req.params.MovieID }
@@ -268,7 +189,7 @@ app.delete('/users/:Username/movies/:MovieID', (req, res) => {
 });
 
 //retrieving movies by genre
-app.get('/genre/:Name', (req, res) => {
+app.get('/genre/:Name', passport.authenticate('jwt', {session: false}), (req, res) => {
   Movies.findOne({ 'Genre.Name': req.params.Name })
       .then((movie) => {
       res.json(movie.Genre);
@@ -280,7 +201,7 @@ app.get('/genre/:Name', (req, res) => {
 });
 
 //retrieving director information
-app.get('/director/:Name', (req, res) => {
+app.get('/director/:Name', passport.authenticate('jwt', {session: false}), (req, res) => {
   Movies.findOne({ 'Director.Name': req.params.Name })
       .then((movie) => {
       res.json(movie.Director);
