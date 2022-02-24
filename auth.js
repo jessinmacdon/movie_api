@@ -17,18 +17,18 @@ module.exports = (router) => {
     router.post('/login', (req, res) => {
         passport.authenticate('local', { session: false}, (error, user, info) => {
             if (error || !user) {
-                return resizeBy.status(400).json({
+                return res.status(400).json({
                     message: 'Something went is not right',
                     user: user
                 });
             }
-            requestAnimationFrame.login(user, { session: false }, (error) => {
+            req.login(user, { session: false }, (error) => {
                 if (error) {
-                    resizeBy.send(error);
+                    res.send(error);
                 }
                 let token = generateJWTToken(user.toJSON());
                 
-                return resizeBy.json({ user, token});
+                return res.json({ user, token });
             });
         }) (req, res);
     });
