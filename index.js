@@ -107,9 +107,9 @@ app.put('/users/:Username', passport.authenticate('jwt', {session: false}), (req
   (err, updatedUser) => {
     if(err) {
       console.error(err);
-      res.status(500).send('Error ' + err)
+      res.status(500).send('Error ' + err);
     } else {
-    res.json(updatedUser);
+      res.status(201).json(updatedUser);
     }
   });
 });
@@ -188,7 +188,7 @@ app.delete('/users/:Username/movies/:MovieID', passport.authenticate('jwt', {ses
   });
 });
 
-//retrieving movies by genre
+//retrieving genre information
 app.get('/genre/:Name', passport.authenticate('jwt', {session: false}), (req, res) => {
   Movies.findOne({ 'Genre.Name': req.params.Name })
       .then((movie) => {
@@ -209,6 +209,31 @@ app.get('/director/:Name', passport.authenticate('jwt', {session: false}), (req,
     .catch((err) => {
       console.error(err);
       res.status(500).send('Error ' + err);
+    });
+});
+
+
+//retrieving movies from a particular director
+app.get('/movies/director/:Name', passport.authenticate('jwt', {session: false}), (req, res) => {
+  Movies.find({ 'Director.Name': req.params.Name })
+      .then((movies) => {
+      res.json(movies);
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send('We couldn\'t find any movies from ' + Director.Name + err);
+    });
+});
+
+//retrieving movies of a particular genre
+app.get('/movies/genre/:Name', passport.authenticate('jwt', {session: false}), (req, res) => {
+  Movies.find({ 'Genre.Name': req.params.Name })
+      .then((movies) => {
+      res.json(movies);
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send('We couldn\'t find any movies from the genre of' + Genre.Name + err);
     });
 });
 
