@@ -92,7 +92,7 @@ app.post('/users', (req, res) => {
   });
 });
 
-//User updates - updating user name
+//User updates - updating username
 app.put('/users/:Username', passport.authenticate('jwt', {session: false}), (req, res) => {
   Users.findOneAndUpdate({ Username: req.body.Username },
   { $set:
@@ -119,7 +119,7 @@ app.delete('/users/:Username', passport.authenticate('jwt', {session: false}), (
   Users.findOneAndRemove({ Username: req.body.Username })
     .then((user) => {
       if (!user) {
-        res.status(200).send(req.params.Username + ' was deleted succesfully.');
+        res.status(200).send(req.params.Username + ' was deleted successnfully.');
       } else {
         res.status(400).send(req.params.Username + ' was not found');
       }
