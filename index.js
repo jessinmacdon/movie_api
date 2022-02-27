@@ -23,6 +23,9 @@ app.use(bodyParser.json());
 
 app.use(bodyParser.urlencoded({ extended: true }));
 
+const cors = require('cors');
+app.use(cors());
+
 let auth = require('./auth')(app);
 
 const passport = require('passport');
@@ -67,6 +70,7 @@ app.get('/users/:Username', passport.authenticate('jwt', {session: false}), (req
 
 //creating new users - signup
 app.post('/users', (req, res) => {
+  let hashedPassword = Users.hashPassword(req.body.Password);
   Users.findOne({ Username: req.body.Username })
   .then((user) => {
     if (user) {
@@ -75,7 +79,7 @@ app.post('/users', (req, res) => {
     Users
       .create({
         Username: req.body.Username,
-        Password: req.body.Password,
+        Password: hashedPassword,
         Email: req.body.Email,
         Birthday: req.body.Birthday
       })
@@ -93,35 +97,38 @@ app.post('/users', (req, res) => {
 });
 
 //User updates - updating username
-app.put('/users/:Username', passport.authenticate('jwt', {session: false}), (req, res) => {
-  Users.findOneAndUpdate({ Username: req.body.Username },
-  { $set:
-    {
-      Username: req.body.Username,
-      Password: req.body.Password,
-      Email: req.body.Email,
-      Birthday: req.body.Birthday
-    }
-  },
-  { new: true },
-  (err, updatedUser) => {
-    if(err) {
-      console.error(err);
-      res.status(500).send('Error ' + err);
-    } else {
-      res.status(201).json(updatedUser);
-    }
-  });
+app.put('/users/:username', 
+  passport.authenticate('jwt', {session: false}), 
+    (req, res) => {
+    Users.findOneAndUpdate(
+      { Username: req.params.username },
+      { $set:
+        {
+          Username: req.body.Username,
+          Password: req.body.Password,
+          Email: req.body.Email,
+          Birthday: req.body.Birthday
+        },
+      },
+      { new: true },
+      (err, updatedUser) => {
+        if(err) {
+          console.error(err);
+          res.status(500).send('Error ' + err);
+        } else {
+          res.status(201).json(updatedUser);
+        }
+      });
 });
 
 //deleting user account
 app.delete('/users/:Username', passport.authenticate('jwt', {session: false}), (req, res) => {
-  Users.findOneAndRemove({ Username: req.body.Username })
+  Users.findOneAndRemove({ Username: req.params.Username })
     .then((user) => {
       if (!user) {
-        res.status(200).send(req.params.Username + ' was deleted successnfully.');
-      } else {
         res.status(400).send(req.params.Username + ' was not found');
+      } else {
+        res.status(200).send(req.params.Username + ' was deleted successfully.');
       }
     })
       .catch((err) => {
