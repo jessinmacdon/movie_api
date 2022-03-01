@@ -23,6 +23,7 @@ app.use(bodyParser.json());
 
 app.use(bodyParser.urlencoded({ extended: true }));
 
+//access control cors
 const cors = require('cors');
 app.use(cors());
 
@@ -30,6 +31,9 @@ let auth = require('./auth')(app);
 
 const passport = require('passport');
 require('passport');
+
+//input validation
+const { check, validationResult } = require('express-validator');
 
 //using express.static to display documentation.html file
 app.use(express.static('/public'));
@@ -69,7 +73,20 @@ app.get('/users/:Username', passport.authenticate('jwt', {session: false}), (req
 });
 
 //creating new users - signup
-app.post('/users', (req, res) => {
+app.post('/users', 
+[
+  check('Username', 'Username is required').isLength({min: 8}),
+  check('Username', 'Username contains non alphanumeric characters - not allowed.').isAlphanumeric,
+  check('Password', 'Password is required').not().isEmpty()
+], (req, res) => {
+
+  //Validation check - stops rest of code from being executed if error is returned
+  let errors = validationResult(req);
+
+  if (!errors.isEmpty()) {
+    return res.status(422).json({ errors: errors.array() });
+  }
+
   let hashedPassword = Users.hashPassword(req.body.Password);
   Users.findOne({ Username: req.body.Username })
   .then((user) => {
@@ -98,6 +115,19 @@ app.post('/users', (req, res) => {
 
 //User updates - updating username
 app.put('/users/:username', 
+[
+  check('Username', 'Username is required').isLength({min: 8}),
+  check('Username', 'Username contains non alphanumeric characters - not allowed.').isAlphanumeric,
+  check('Password', 'Password is required').not().isEmpty()
+], (req, res) => {
+
+  //Validation check - stops rest of code from being executed if error is returned
+  let errors = validationResult(req);
+
+  if (!errors.isEmpty()) {
+    return res.status(422).json({ errors: errors.array() });
+  }
+
   passport.authenticate('jwt', {session: false}), 
     (req, res) => {
     Users.findOneAndUpdate(
@@ -108,7 +138,7 @@ app.put('/users/:username',
           Password: req.body.Password,
           Email: req.body.Email,
           Birthday: req.body.Birthday
-        },
+        }
       },
       { new: true },
       (err, updatedUser) => {
@@ -119,6 +149,7 @@ app.put('/users/:username',
           res.status(201).json(updatedUser);
         }
       });
+    }
 });
 
 //deleting user account
@@ -250,7 +281,8 @@ app.use((err, _req, res, _next) => {
   res.status(500).send('Something went wrong!');
 });
 
-//action listener for port 8080
-app.listen(8080, () => {
-  console.log('Your app is listening on Port 8080');
+//action listener for clients port or 8080
+const port = process.env.PORT || 8080;
+app.listen(port, '0.0.0.0', () => {
+  console.log('Listening on Port ' + port);
 });
