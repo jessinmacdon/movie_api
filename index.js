@@ -3,14 +3,21 @@ const express = require('express'),
   bodyParser = require('body-parser'),
   uuid = require('uuid');
 
+//input validation
+const { check, validationResult } = require('express-validator');
+
+
 const mongoose = require('mongoose');
 const Models = require('./models.js');
 
 const Movies = Models.Movie;
 const Users = Models.User;
 
-mongoose.connect('mongodb://localhost:27017/myFlixDB', { useNewUrlParser: true, useUnifiedTopology: true });
+// Enable this to connect the app with local Mongo DB
+// mongoose.connect('mongodb://localhost:27017/myFlixDB', { useNewUrlParser: true, useUnifiedTopology: true });
 
+// Enable this to connect the app with MongoDB Atlas
+mongoose.connect( process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifiedTopology: true });
 
 //passing/invoking express iin the app
 const app = express();
@@ -31,9 +38,6 @@ let auth = require('./auth')(app);
 
 const passport = require('passport');
 require('passport');
-
-//input validation
-const { check, validationResult } = require('express-validator');
 
 //using express.static to display documentation.html file
 app.use(express.static('/public'));
@@ -76,11 +80,12 @@ app.get('/users/:Username', passport.authenticate('jwt', {session: false}), (req
 app.post('/users', 
 [
   check('Username', 'Username is required').isLength({min: 8}),
-  check('Username', 'Username contains non alphanumeric characters - not allowed.').isAlphanumeric,
-  check('Password', 'Password is required').not().isEmpty()
+  check('Username', 'Username contains non alphanumeric characters - not allowed.').isAlphanumeric(),
+  check('Password', 'Password is required').not().isEmpty(),
+  check('Email', 'Email is not valid ').isEmail()
 ], (req, res) => {
 
-  //Validation check - stops rest of code from being executed if error is returned
+  // Validation check - stops rest of code from being executed if error is returned
   let errors = validationResult(req);
 
   if (!errors.isEmpty()) {
@@ -101,7 +106,7 @@ app.post('/users',
         Birthday: req.body.Birthday
       })
       .then ((user) => {res.status(201).json(user) })
-    .catch((error) => {
+      .catch((error) => {
       console.error(error);
       res.status(500).send('Error: ' + error);
     })
@@ -117,8 +122,8 @@ app.post('/users',
 app.put('/users/:username', 
 [
   check('Username', 'Username is required').isLength({min: 8}),
-  check('Username', 'Username contains non alphanumeric characters - not allowed.').isAlphanumeric,
-  check('Password', 'Password is required').not().isEmpty()
+  check('Username', 'Username contains non alphanumeric characters - not allowed.').isAlphanumeric(),
+  check('Password', 'Password is required').not().isEmpty(),
 ], (req, res) => {
 
   //Validation check - stops rest of code from being executed if error is returned
