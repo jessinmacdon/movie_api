@@ -17,9 +17,10 @@ const Users = Models.User;
 // mongoose.connect('mongodb://localhost:27017/myFlixDB', { useNewUrlParser: true, useUnifiedTopology: true });
 
 // Enable this to connect the app with MongoDB Atlas
-mongoose.connect(process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect('mongodb+srv://Macdon:Macdon2020@myflixdb.swpos.mongodb.net/myFlixDB?retryWrites=true&w=majority', { useNewUrlParser: true, useUnifiedTopology: true });
+//process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifiedTopology: true });
 
-//passing/invoking express iin the app
+//passing/invoking express in the app
 const app = express();
 
 //passing/invoking morgan for logging
