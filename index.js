@@ -14,11 +14,23 @@ const Movies = Models.Movie;
 const Users = Models.User;
 
 // Enable this to connect the app with local Mongo DB
-// mongoose.connect('mongodb://localhost:27017/myFlixDB', { useNewUrlParser: true, useUnifiedTopology: true });
+//mongoose.connect('mongodb://localhost:27017/myFlixDB', { useNewUrlParser: true, useUnifiedTopology: true });
 
 // Enable this to connect the app with MongoDB Atlas
-const uri = ( process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifiedTopology: true });
-//mongoose.connect(process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifiedTopology: true });
+const uri = ( 
+  process.env.CONNECTION_URI, 
+  { useNewUrlParser: true, useUnifiedTopology: true },
+  () => {
+    console.log('Connected to mongoDB');
+  }
+);
+
+
+mongoose.connect( uri, { 
+  serverSelectionTimeoutMS: 5000
+}).catch(err => console.log(err.reason));
+mongoose.set('bufferCommands', false);
+
 
 //passing/invoking express in the app
 const app = express();
