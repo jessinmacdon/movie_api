@@ -147,7 +147,7 @@ app.post('/users',
 });
 
 //User updates - updating username
-app.put('/users/:Username', 
+app.put('/users/:Username', passport.authenticate('jwt', {session: false}), 
 [
   check('Username', 'Username is required').isLength({min: 8}),
   check('Username', 'Username contains non alphanumeric characters - not allowed.').isAlphanumeric(),
@@ -161,28 +161,25 @@ app.put('/users/:Username',
     return res.status(422).json({ errors: errors.array() });
   }
 
-  passport.authenticate('jwt', {session: false}), 
-    (req, res) => {
-    Users.findOneAndUpdate(
-      { Username: req.params.username },
-      { $set:
-        {
-          Username: req.body.Username,
-          Password: req.body.Password,
-          Email: req.body.Email,
-          Birthday: req.body.Birthday
-        }
-      },
-      { new: true },
-      (err, updatedUser) => {
-        if(err) {
-          console.error(err);
-          res.status(500).send('Error ' + err);
-        } else {
-          res.status(201).json(updatedUser);
-        }
-      });
-    }
+  Users.findOneAndUpdate(
+    { Username: req.params.username },
+    { $set:
+      {
+        Username: req.body.Username,
+        Password: req.body.Password,
+        Email: req.body.Email,
+        Birthday: req.body.Birthday
+      }
+    },
+    { new: true },
+    (err, updatedUser) => {
+      if(err) {
+        console.error(err);
+        res.status(500).send('Error ' + err);
+      } else {
+        res.status(201).json(updatedUser);
+      }
+    });
 });
 
 //deleting user account
