@@ -29,7 +29,6 @@ const uri = (
 mongoose.connect( uri, { 
   serverSelectionTimeoutMS: 5000
 }).catch(err => console.log(err.reason));
-mongoose.set('bufferCommands', false);
 
 
 //passing/invoking express in the app
