@@ -18,13 +18,29 @@ const Users = Models.User;
 
 // Enable this to connect the app with MongoDB Atlas
 const uri = ( 
-  process.env.CONNECTION_URI, 
-  { useNewUrlParser: true, useUnifiedTopology: true },
-  () => {
-    console.log('Connected to mongoDB');
-  }
+  process.env.CONNECTION_URI
+  // { useNewUrlParser: true, useUnifiedTopology: true },
+  // () => {
+  //   console.log('Connected to mongoDB');
+  // }
 );
 
+const connectDB = async () => {
+    try {
+        uri, {
+            useNewUrlParser: true,
+            useUnifiedTopology: true,
+            useFindAndModify: false,
+            useCreateIndex: true
+        };
+
+        console.log('MongoDB connected!!');
+    } catch (err) {
+        console.log('Failed to connect to MongoDB', err);
+    }
+};
+
+connectDB();
 
 mongoose.connect( uri, { 
   serverSelectionTimeoutMS: 5000
