@@ -147,7 +147,7 @@ app.post('/users',
 });
 
 //User updates - updating username
-app.put('/users/:username', 
+app.put('/users/:Username', 
 [
   check('Username', 'Username is required').isLength({min: 8}),
   check('Username', 'Username contains non alphanumeric characters - not allowed.').isAlphanumeric(),
@@ -164,7 +164,7 @@ app.put('/users/:username',
   passport.authenticate('jwt', {session: false}), 
     (req, res) => {
     Users.findOneAndUpdate(
-      { Username: req.body.username },
+      { Username: req.params.username },
       { $set:
         {
           Username: req.body.Username,
