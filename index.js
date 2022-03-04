@@ -17,7 +17,7 @@ const Users = Models.User;
 // mongoose.connect('mongodb://localhost:27017/myFlixDB', { useNewUrlParser: true, useUnifiedTopology: true });
 
 // Enable this to connect the app with MongoDB Atlas
-const uri = process.env.CONNECTION_URI;
+const uri = ( process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifiedTopology: true });
 //mongoose.connect(process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifiedTopology: true });
 
 //passing/invoking express in the app
@@ -97,7 +97,7 @@ app.post('/users',
   Users.findOne({ Username: req.body.Username })
   .then((user) => {
     if (user) {
-      return res.status(400).send(reg.body.Username + 'already exists');
+      return res.status(400).send(req.body.Username + 'already exists');
   } else {
     Users
       .create({
