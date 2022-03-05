@@ -19,12 +19,9 @@ const Users = Models.User;
 // Enable this to connect the app with MongoDB Atlas
 const uri = ( 
   process.env.CONNECTION_URI
-  // { useNewUrlParser: true, useUnifiedTopology: true },
-  // () => {
-  //   console.log('Connected to mongoDB');
-  // }
 );
 
+//async mongoose.connect function
 const connectDB = async () => {
     try {
         uri, {
@@ -42,6 +39,7 @@ const connectDB = async () => {
 
 connectDB();
 
+// track mongoose connection errors for more information if error were to occur
 mongoose.connect( uri, { 
   serverSelectionTimeoutMS: 5000
 }).catch(err => console.log(err.reason));
