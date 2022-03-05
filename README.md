@@ -48,6 +48,8 @@ The Api is hosted/deployed to Heroku
 
 The app is also deployed on GitHub Pages
 
+`https://jessinmacdon.github.io/movie_api/`
+
 
 
 
