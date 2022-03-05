@@ -74,7 +74,7 @@ app.get('/', (req, res) => {
 });
 
 // serving documentation - express.static
-app.get('/documentation', passport.authenticate('jwt', {session: false}), (req, res) => {
+app.get('/documentation', (req, res) => {
     res.sendFile(__dirname, 'documentation.html');
 });
 
@@ -92,7 +92,7 @@ app.get('/users', passport.authenticate('jwt', {session: false}), (req, res) => 
 
 //return a (one) user
 app.get('/users/:Username', passport.authenticate('jwt', {session: false}), (req, res) => {
-  Users.findOne({ Username: req.body.Username })
+  Users.findOne({ Username: req.params.Username })
     .then((users) => {
         res.json(users);
     })
