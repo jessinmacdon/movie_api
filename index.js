@@ -17,7 +17,7 @@ const Users = Models.User;
 //mongoose.connect('mongodb://localhost:27017/myFlixDB', { useNewUrlParser: true, useUnifiedTopology: true });
 
 // Enable this to connect the app with MongoDB Atlas
-const uri = ( 
+const uri = (
   process.env.CONNECTION_URI
 );
 
@@ -40,7 +40,7 @@ const connectDB = async () => {
 connectDB();
 
 // track mongoose connection errors for more information if error were to occur
-mongoose.connect( uri, { 
+mongoose.connect( uri, {
   serverSelectionTimeoutMS: 5000
 }).catch(err => console.log(err.reason));
 
@@ -103,7 +103,7 @@ app.get('/users/:Username', passport.authenticate('jwt', {session: false}), (req
 });
 
 //creating new users - signup
-app.post('/users', 
+app.post('/users',
 [
   check('Username', 'Username is required').isLength({min: 8}),
   check('Username', 'Username contains non alphanumeric characters - not allowed.').isAlphanumeric(),
@@ -145,7 +145,7 @@ app.post('/users',
 });
 
 //User updates - updating username
-app.put('/users/:Username', passport.authenticate('jwt', {session: false}), 
+app.put('/users/:Username', passport.authenticate('jwt', {session: false}),
 [
   check('Username', 'Username is required').isLength({min: 8}),
   check('Username', 'Username contains non alphanumeric characters - not allowed.').isAlphanumeric(),
@@ -197,7 +197,8 @@ app.delete('/users/:Username', passport.authenticate('jwt', {session: false}), (
 });
 
 //viewing movies list - json
-app.get('/movies', passport.authenticate('jwt', {session: false}), (req, res) => {
+app.get('/movies', //passport.authenticate('jwt', {session: false}),
+(req, res) => {
   Movies.find()
     .then((movies) => {
       res.status(200).json(movies);
