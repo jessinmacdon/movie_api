@@ -190,6 +190,10 @@ Process:
 ---
 ## Hosting on MongoDBAtlas (DB) and HEROKU (PaaS)
 
+````
+https://macdon-myflix.herokuapp.com/
+````
+
 ### Steps
 
 * register with heroku, install toolkit
@@ -209,15 +213,6 @@ git push heroku main
 * add version of node.js (16.14.2) to package.json,
 * change HEROKU version from 20 to 18
 * remove programming/ code errors (reference HEROKU documentation)
-
-
-
-
-
-
-
-
-
 
 
 
