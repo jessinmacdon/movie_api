@@ -116,7 +116,7 @@ app.get('/documentation', (req, res) => {
 /** 
  * GET: Returns a list of ALL users
  * Request body: Bearer token
- * @returns array of user objects
+ * @returns {Request} array of user objects
  * @requires passport
  */
 app.get('/users', passport.authenticate('jwt', { session: false }), (req, res) => {
@@ -134,7 +134,7 @@ app.get('/users', passport.authenticate('jwt', { session: false }), (req, res) =
  * GET: Returns data on one/single user (user object) by username
  * @fetchAPI GET:
  * @param Username
- * @returns user object
+ * @returns {Request} user object
  * @requires passport
  */
 app.get('/users/:Username', passport.authenticate('jwt', { session: false }), (req, res) => {
@@ -151,7 +151,7 @@ app.get('/users/:Username', passport.authenticate('jwt', { session: false }), (r
 /**
  * POST: Allows users to register/sign up; Username, Password & Email are required fields!
  * @param {fetchAPI} users - body: Bearer token, JSON with user information
- * @returns user object
+ * @returns {Request}
  */
 app.post('/users',
   [
@@ -198,7 +198,7 @@ app.post('/users',
  * PUT: Allow users to update their user details 
  * @param {fetchAPI} users body: Bearer token, updated user info
  * @param Username
- * @returns user object with updates
+ * @returns {Request}
  * @requires passport
  */
 app.put('/users/:Username', passport.authenticate('jwt', { session: false }),
@@ -242,7 +242,7 @@ app.put('/users/:Username', passport.authenticate('jwt', { session: false }),
  * DELETE: Allows users to delete their account - derigister
  * @param {fetchAPI} users - body: Bearer token
  * @param Username
- * @returns success message
+ * @returns {Request}
  * @requires passport
  */
 app.delete('/users/:Username', passport.authenticate('jwt', { session: false }), (req, res) => {
@@ -263,7 +263,7 @@ app.delete('/users/:Username', passport.authenticate('jwt', { session: false }),
 /**
  * GET: Returns a list of ALL movies 
  * @param {fetchAPI} movies body: Bearer token
- * @returns array of movie objects
+ * @returns {Request}
  * @requires passport
  */
 app.get('/movies', passport.authenticate('jwt', { session: false }),
@@ -282,7 +282,7 @@ app.get('/movies', passport.authenticate('jwt', { session: false }),
  * GET: Returns all data pertaining to a single movie to the user
  * @param {fetchAPI} movies body: Bearer token
  * @param movieId
- * @returns movie object
+ * @returns {Request}
  * @requires passport
  */
 app.get('/movies/:Title', passport.authenticate('jwt', { session: false }), (req, res) => {
@@ -301,7 +301,7 @@ app.get('/movies/:Title', passport.authenticate('jwt', { session: false }), (req
  * @param {fetchAPI} users body: Bearer token
  * @param username
  * @param movieId
- * @returns user object
+ * @returns {Request}
  * @requires passport
  */
 app.post('/users/:Username/movies/:MovieID', passport.authenticate('jwt', { session: false }), (req, res) => {
@@ -324,7 +324,7 @@ app.post('/users/:Username/movies/:MovieID', passport.authenticate('jwt', { sess
  * GET: Returns a list of favourite movies from the user
  * @param {fetchAPI} users body: Bearer token
  * @param Username
- * @returns array of favourite movies
+ * @returns {Request}
  * @requires passport
  */
 app.get('/users/:Username/movies', passport.authenticate('jwt', { session: false }), (req, res) => {
@@ -347,7 +347,7 @@ app.get('/users/:Username/movies', passport.authenticate('jwt', { session: false
  * @param {fetchAPI} users body: Bearer token
  * @param Username
  * @param movieId
- * @returns user object
+ * @returns {Request}
  * @requires passport
  */
 app.delete('/users/:Username/movies/:MovieID', passport.authenticate('jwt', { session: false }), (req, res) => {
@@ -370,7 +370,7 @@ app.delete('/users/:Username/movies/:MovieID', passport.authenticate('jwt', { se
  * GET: Returns data of a particular genre including information like Name, description
  * @param {fetchAPI} movies body: Bearer token
  * @param Name (Director.Name)
- * @returns director object
+ * @returns {Request}
  * @requires passport
  */
 app.get('/genre/:Name', passport.authenticate('jwt', { session: false }), (req, res) => {
@@ -388,7 +388,7 @@ app.get('/genre/:Name', passport.authenticate('jwt', { session: false }), (req, 
  * GET: Returns a data about a director by name
  * @param {fetchAPI} movies body: Bearer token
  * @param Name (Director.Name)
- * @returns director object
+ * @returns {Request}
  * @requires passport
  */
 app.get('/director/:Name', passport.authenticate('jwt', { session: false }), (req, res) => {
@@ -407,7 +407,7 @@ app.get('/director/:Name', passport.authenticate('jwt', { session: false }), (re
  * GET: Returns data about a director of a particular movie including bio, birth year, death year
  * @param {fetchAPI} movies body: Bearer token
  * @param Name (Director.Name)
- * @returns director object
+ * @returns {Request}
  * @requires passport
  */
 app.get('/movies/director/:Name', passport.authenticate('jwt', { session: false }), (req, res) => {
@@ -425,7 +425,7 @@ app.get('/movies/director/:Name', passport.authenticate('jwt', { session: false 
  * GET: Returns data about a genre of a particular movie including name and description (e.g: Action)
  * @param {fetchAPI} movies body: Bearer token
  * @param Name (Genre.Name)
- * @returns genre object
+ * @returns {Request}
  * @requires passport
  */
 app.get('/movies/genre/:Name', passport.authenticate('jwt', { session: false }), (req, res) => {
