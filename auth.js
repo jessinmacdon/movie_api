@@ -1,5 +1,4 @@
 const jwtSecret = 'your_jwt_secret';
-
 const jwt = require('jsonwebtoken'),
     passport = require('passport');
 
@@ -10,7 +9,7 @@ require('./passport');
  * creates JWT (expiring in 7 days, using HS256 algorithm to encode)
  * @param {object} user 
  * @returns user object, jwt, and additional information on token
- */
+*/
 let generateJWTToken = (user) => {
     return jwt.sign(user, jwtSecret, {
         subject: user.Username,
@@ -19,9 +18,9 @@ let generateJWTToken = (user) => {
     });
 }
 
-/* POST login endpoint */
+
 /**
- * handles user login, generating a jwt upon login
+ * POST: login endpoint handles user login, generating a jwt upon login
  * @function generateJWTToken
  * @param {*} router 
  * @returns user object with jwt

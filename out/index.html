@@ -42,7 +42,551 @@
 
 
 
+    <section>
+        <article><h1>MyFlix Movie Api</h1>
+<h2>Description:</h2>
+<p> As part of my CareerFoundry Full-Stack Web Dev program, I developed a movie API that gives the user access to information about movies. It includes infromation mainly about the movie's description, genre, directors and actors. In order to access this information, you would have to **create a user account (register) and login**. </p>
+<h2>Tools and Technogy used:</h2>
+<p>(myFlix Api was build with the following tools):</p>
+<ul>
+<li>Node.js</li>
+<li>JavaScript</li>
+<li>Express</li>
+<li>MongoDB</li>
+</ul>
+<p>This API allows a users to access a database to containing data on a diverse genre of movies. The Data provides the user access to information about the movies' synopsis (description), directors and genre specifications. The user will be able to sign up/sign in, update personal information and save/delete favourite movies to/from their user account.</p>
+<h2>How to get Started and run the project ...</h2>
+<h3>As a developer:</h3>
+<ol>
+<li>Clone or download repository ...</li>
+</ol>
+<pre class="prettyprint source"><code>git clone https://github.com/jessinmacdon/movie_api.git
+</code></pre>
+<ol start="2">
+<li>Install packages mentioned in the package.json file</li>
+</ol>
+<pre class="prettyprint source"><code>npm i
+</code></pre>
+<ol start="3">
+<li>Install mongodb</li>
+</ol>
+<pre class="prettyprint source"><code>npm install mongodb
+</code></pre>
+<ol start="4">
+<li>
+<p>Connect with own MongoDB (local or external)
+define CONNECTION_URI as environment variable, otherwise it will connect to mongodb://localhost:27017/test</p>
+</li>
+<li>
+<p>Run/launch server</p>
+</li>
+</ol>
+<pre class="prettyprint source"><code>npm run start
+</code></pre>
+<p>OR</p>
+<pre class="prettyprint source"><code>node index.js
+</code></pre>
+<h3>As a user:</h3>
+<p>As a user head one of the clients of the movie api listed below to interact with the movie api and follow these steps:</p>
+<ul>
+<li>To get started, you will need to create an account - use the sign up/register/create an acoount button.</li>
+<li>Second, you will requested to login - please use the credentials you just created to login. A token will be generated and used to log you in to the application where you will see all the movies</li>
+</ul>
+<pre class="prettyprint source"><code>https://jessinmacdon.github.io/myFlix-App/welcome
+</code></pre>
+<pre class="prettyprint source"><code>https://jessinmacdon.github.io/movie_api/
+</code></pre>
+<p><em><strong>You could also test the API using <code>postman</code></strong></em></p>
+<ul>
+<li>Run it using the command below</li>
+</ul>
+<p><code>$ node index.js</code></p>
+<h2>Features/Technical Requirements (following the CareerFoundry project brief)</h2>
+<ul>
+<li>MongoDB</li>
+<li>node.js, usage of package.json</li>
+<li>Express</li>
+<li>RESTful architecture</li>
+<li>usage of at least three middleware modules</li>
+<li>database: built with MongoDB</li>
+<li>business logic layer: modeled with Mongoose</li>
+<li>API return movies in JSON</li>
+<li>no code-errors</li>
+<li>testing in Postman</li>
+<li>security measures: code for user authentication, user authorization, data validation, meet data security regulations (GDPO)</li>
+<li>Deployment on GitHub</li>
+<li>Deployment on Heroku</li>
+</ul>
+<h3>The Api contains several endpoints that allow a user to make the following actions:</h3>
+<ul>
+<li>Allow new users to Sign up (register)</li>
+</ul>
+<p><img src="img/create-user.png" alt="create new user!"></p>
+<ul>
+<li>Allow users to Login to their account</li>
+</ul>
+<p><img src="img/login.png" alt="Allow users to login!"></p>
+<ul>
+<li>Return a list of all users</li>
+</ul>
+<p><img src="img/get-all-users.png" alt="retrieving all users!"></p>
+<ul>
+<li>Return a user by username - Allows users to view their profile details</li>
+</ul>
+<p><img src="img/get-user.png" alt="retrieving one user!"></p>
+<ul>
+<li>Allow users to Update their user information (Username)</li>
+</ul>
+<p><img src="img/update-user-info.png" alt="updating user information!"></p>
+<ul>
+<li>login with updated user credentials</li>
+</ul>
+<p><img src="img/register.png" alt="Allow users to login!"></p>
+<ul>
+<li>Return a list of movies to the user</li>
+</ul>
+<p><img src="img/get-all-movies.png" alt="retrieve info on all movies!"></p>
+<ul>
+<li>Return data about a single movie to the user (Description, genre, director and imageUrl) by title</li>
+</ul>
+<p><img src="img/get-movie.png" alt="retieve info on a single movie!"></p>
+<ul>
+<li>Return a list of movies by genre to the user</li>
+</ul>
+<p><img src="img/remove-fav.png" alt="removing movies from favourite list!"></p>
+<ul>
+<li>Return a list of movies by director to the user</li>
+</ul>
+<p><img src="img/remove-fav.png" alt="removing movies from favourite list!"></p>
+<ul>
+<li>Allow users to add a movie to their favourite movies list</li>
+</ul>
+<p><img src="img/add-fav.png" alt="Adding movies to favourite list!"></p>
+<ul>
+<li>Allow a user to remove a movie from a their list of favourite movies</li>
+</ul>
+<p><img src="img/remove-fav.png" alt="removing movies from favourite list!"></p>
+<ul>
+<li>Return data on all movies of a particular genre to the user</li>
+</ul>
+<p><img src="img/get-genre.png" alt="retrieve info about movie genre!"></p>
+<ul>
+<li>Return data about a genre (descrpition/definition) to the user</li>
+</ul>
+<p><img src="img/get-all-genres.png" alt="retrieve info about movie genre - 1 movie!"></p>
+<ul>
+<li>Return info on all movies from a particular director to the user</li>
+</ul>
+<p><img src="img/get-director.png" alt="retrieve info on all directors!"></p>
+<ul>
+<li>Return data about a particular director(bio, date of birth and/or Death year) the user</li>
+</ul>
+<p><img src="img/get-all-directors.png" alt="retrieve info on a director of a particular movie!"></p>
+<ul>
+<li>Allow users to deregister (delete acoount)</li>
+</ul>
+<p><img src="img/delete-user.png" alt="deleting user account!"></p>
+<hr>
+<h3>Create and populate non-relational database MongoDB</h3>
+<ul>
+<li>use database schema diagram to sketch structure of database, division into two collections (&quot;movies&quot; and &quot;users&quot;).</li>
+<li>installing mongo shell</li>
+<li>use Mongo Shell to create database with CRUD operations</li>
+<li>Create the 2 collections &quot;movies&quot; and &quot;users&quot;.</li>
+<li>Add 10 documents to the &quot;movies&quot; collection (including embedded documents for the keys &quot;genre&quot; and &quot;director&quot;).</li>
+<li>In the &quot;users&quot; collection - consisting of 4 documents - references are used to store information about the user's favorite movies.</li>
+</ul>
+<h3>Building models with Mongoose (Business Logic)</h3>
+<p>Use Mongoose to build the Business Logic Layer linking the database from MongoDB to the server (and finally to the Web Browser).</p>
+<p>Process:</p>
+<ul>
+<li>Installation of object model driver Mongoose</li>
+<li>Installation of dependencies: jsonwebtoken (jwt), bcrypt</li>
+<li>Configuring the schemata for the users and the movies collection</li>
+<li>Creation of the Models in a separate models.js file</li>
+<li>Exporting the models to index.js</li>
+<li>Rewriting the CRUD operations to query the mongoose models</li>
+<li>Integrating Mongoose with the REST API</li>
+<li>Apply local and jwt authentication methods</li>
+<li>Test the endpoints in Postman</li>
+</ul>
+<hr>
+<h2>Data Security</h2>
+<h3>Authentication in Node.js/Express using Passport</h3>
+<ul>
+<li>Implement basic HTTP authentication for initial login requests</li>
+<li>implement login query with generation of JWT token, see screenshot below demonstration working endpoint in Postman:</li>
+</ul>
+<h3>Implementation of Security Measures for Backend</h3>
+<ul>
+<li>CORS in Express (set to allow for all origins)</li>
+<li>Bcrypt for Password hashing (see screenshot)</li>
+<li>Adjust Environment variable to not reveal Connection URI</li>
+</ul>
+<hr>
+<h2>Hosting on MongoDBAtlas (DB) and HEROKU (PaaS)</h2>
+<h3>Steps</h3>
+<ul>
+<li>
+<p>register with heroku, install toolkit</p>
+</li>
+<li>
+<p>change port</p>
+</li>
+<li>
+<p>create Heroku app</p>
+</li>
+<li>
+<p>create mongodb instance on MongoDBAtlas</p>
+</li>
+<li>
+<p>export MongoDB database with mongodump (each collection as json, without commas between documents, not arrays)</p>
+</li>
+<li>
+<p>push Git main to Heroku</p>
+</li>
+</ul>
+<pre class="prettyprint source"><code>git push heroku main
+</code></pre>
+<hr>
+<h3>Troubleshooting of deployment(hosting) process to HEROKU</h3>
+<ul>
+<li>add version of node.js (16.14.2) to package.json,</li>
+<li>change HEROKU version from 20 to 18</li>
+<li>remove programming/ code errors (reference HEROKU documentation)</li>
+</ul></article>
+    </section>
 
+
+
+
+
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>index.js</h2>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description"><p>The index file creates the Express api app, sets up the server and implements routes to Api
+endpoints used to access myFlixDB. Requests are made to these endpoints using mongoose models found in the
+models.js file and following auth rules implemented in the passport.js file. The DB is hosted on mango atlas, we access the DB using mongoose connect method.
+The server is hosted on Heroku</p></div>
+        
+
+        
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line1">line 1</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+    
+    </div>
+
+    
+
+    
+        <h3 class="subsection-title">Requires</h3>
+
+        <ul>
+            <li>module:express</li>
+        
+            <li>module:express-validator</li>
+        
+            <li>module:mongoose</li>
+        
+            <li>module:'./models.js'</li>
+        
+            <li>module:morgan</li>
+        
+            <li>module:passport</li>
+        
+            <li>module:'./auth.js'</li>
+        
+            <li>module:cors</li>
+        </ul>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>models.js</h2>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description"><p>This file will implement schemas for documents in the movies and users collections in
+my myFlix database. Models are created through these schemas, which are used in http requests
+to Api endpoints to read, update, create and delete these documents from my database. Mongoose is
+connected to the database using the connect method in the index file.</p></div>
+        
+
+        
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="models.js.html">models.js</a>, <a href="models.js.html#line1">line 1</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+    
+    </div>
+
+    
+
+    
+        <h3 class="subsection-title">Requires</h3>
+
+        <ul>
+            <li>module:mongoose</li>
+        
+            <li>module:bcrypt</li>
+        </ul>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>passport.js</h2>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description"><p>the aim of this file is to implement 2 passport strategies that will be used to authenticate requests
+to the overall API endpoints. When the user logs in our app, this will function as a validation method for the username and password
+and compare them to our users collection in the database area.
+The JWT strategy is also used, this will decode the Web Token returned to the user after having a successfull login, after it will check the user ID, and if it matches
+the user collection in the database.</p></div>
+        
+
+        
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="passport.js.html">passport.js</a>, <a href="passport.js.html#line1">line 1</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+    
+    </div>
+
+    
+
+    
+        <h3 class="subsection-title">Requires</h3>
+
+        <ul>
+            <li>module:passport-local</li>
+        
+            <li>module:passport</li>
+        
+            <li>module:passport-jwt</li>
+        
+            <li>module:'.models.js'</li>
+        </ul>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
 
 
 
@@ -50,13 +594,13 @@
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#addFavouriteMovies">addFavouriteMovies</a></li><li><a href="global.html#app">app</a></li><li><a href="global.html#auth">auth</a></li><li><a href="global.html#connectDB">connectDB</a></li><li><a href="global.html#cors">cors</a></li><li><a href="global.html#generateJWTToken">generateJWTToken</a></li><li><a href="global.html#Movie">Movie</a></li><li><a href="global.html#movieSchema">movieSchema</a></li><li><a href="global.html#passport">passport</a></li><li><a href="global.html#port">port</a></li><li><a href="global.html#uri">uri</a></li><li><a href="global.html#userSchema">userSchema</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.10</a> on Sat May 28 2022 15:49:04 GMT+0200 (Central European Summer Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.10</a> on Mon May 30 2022 17:13:38 GMT+0200 (Central European Summer Time)
 </footer>
 
 <script> prettyPrint(); </script>

@@ -1,3 +1,19 @@
+/**
+ * @file The index file creates the Express api app, sets up the server and implements routes to Api
+ * endpoints used to access myFlixDB. Requests are made to these endpoints using mongoose models found in the
+ * models.js file and following auth rules implemented in the passport.js file. The DB is hosted on mango atlas, we access the DB using mongoose connect method. 
+ * The server is hosted on Heroku
+ * @requires express Used to create an express application.
+ * @requires express-validator Used to perform validation on data provided when creating or updating a user.
+ * @requires mongoose Connects the app to the database and implements data schemas using models.
+ * @requires './models.js' The file where data schemas and models are defined.
+ * @requires morgan Used to log requests made to the database.
+ * @requires passport Used to create strategies for authenticating and authorising requests to the Api endpoints.
+ * @requires './auth.js' The file that implements the user login route.
+ * @requires cors Used to control origins from which requests to the server can be made.
+ */
+
+// requiring express, morgan middleware, body parser and uuid
 const express = require('express'),
   morgan = require('morgan'),
   bodyParser = require('body-parser'),
@@ -13,17 +29,24 @@ const Movies = Models.Movie;
 const Users = Models.User;
 
 
-/* Connecting to MongoDB myFlixDB */
-// a) Connect to Local DB - Enable this to connect the app with local Mongo DB
-// const uri = mongoose.connect('mongodb://localhost:27017/myFlixDB', { useNewUrlParser: true, useUnifiedTopology: true });
+/** 
+* Connecting to MongoDB myFlixDB 
+* a) Connect to Local DB - Enable this to connect the app with local Mongo DB
+*/
 
-// b) Connect to Hosted DB - Enable this to connect the app with MongoDB Atlas
-// make sure to disconnect local local DB when enabling this and vice versa
+/** 
+* const uri = mongoose.connect('mongodb://localhost:27017/myFlixDB', { useNewUrlParser: true, useUnifiedTopology: true });
+*/
+
+/** 
+ * b) Connect to Hosted DB - Enable this to connect the app with MongoDB Atlas 
+ * make sure to disconnect local local DB when enabling this and vice versa
+ */
 const uri = (
   process.env.CONNECTION_URI
 );
 
-//async mongoose.connect function
+/** async mongoose.connect function */
 const connectDB = async () => {
   try {
     uri, {
@@ -41,13 +64,13 @@ const connectDB = async () => {
 
 connectDB();
 
-// track mongoose connection errors for more information if error were to occur
+/** track mongoose connection errors for more information if error were to occur */
 mongoose.connect(uri, {
   serverSelectionTimeoutMS: 5000
 }).catch(err => console.log(err.reason));
 
 
-//passing/invoking express in the app
+/** passing/invoking express in the app */
 const app = express();
 
 /**
@@ -55,35 +78,28 @@ const app = express();
  */
 app.use(morgan('common'));
 
-//passing/invoking body-paser
+/** passing/invoking body-paser */
 app.use(bodyParser.json());
-
 app.use(bodyParser.urlencoded({ extended: true }));
 
-//import and access control cors to set allowed origins
+/** import and access control cors to set allowed origins */
 const cors = require('cors');
 app.use(cors());
 
-//import auth.js file - authentication 
+/** import auth.js file - authentication */
 let auth = require('./auth')(app);
 
-//import passport.js file and invoke the model
+/** import passport.js file and invoke the model */
 const passport = require('passport');
 require('passport');
 
-//using express.static to display documentation.html file
+/** using express.static to display documentation.html file */
 app.use(express.static('/public'));
-
-
-
-/* ******* START OF ENDPOINT DEFINITION ******* 
-************************************************
-************************************************
-*/
 
 
 /**
  * GET: Takes the user the welcome page displaying a welcome message "/" url
+ * @param {*} router 
  * @returns Welcome message
  */
 app.get('/', (req, res) => {
@@ -91,7 +107,7 @@ app.get('/', (req, res) => {
 });
 
 /**
- * Serves sstatic content for the app from the 'public' directory
+ * Serves static content for the app from the 'public' directory
  */
 app.get('/documentation', (req, res) => {
   res.sendFile(__dirname, 'documentation.html');
@@ -116,7 +132,7 @@ app.get('/users', passport.authenticate('jwt', { session: false }), (req, res) =
 
 /**
  * GET: Returns data on one/single user (user object) by username
- * Request body: Bearer token
+ * @fetchAPI GET:
  * @param Username
  * @returns user object
  * @requires passport
@@ -134,7 +150,7 @@ app.get('/users/:Username', passport.authenticate('jwt', { session: false }), (r
 
 /**
  * POST: Allows users to register/sign up; Username, Password & Email are required fields!
- * Request body: Bearer token, JSON with user information
+ * @param {fetchAPI} users - body: Bearer token, JSON with user information
  * @returns user object
  */
 app.post('/users',
@@ -180,7 +196,7 @@ app.post('/users',
 
 /**
  * PUT: Allow users to update their user details 
- * Request body: Bearer token, updated user info
+ * @param {fetchAPI} users body: Bearer token, updated user info
  * @param Username
  * @returns user object with updates
  * @requires passport
@@ -224,7 +240,7 @@ app.put('/users/:Username', passport.authenticate('jwt', { session: false }),
 
 /**
  * DELETE: Allows users to delete their account - derigister
- * Request body: Bearer token
+ * @param {fetchAPI} users - body: Bearer token
  * @param Username
  * @returns success message
  * @requires passport
@@ -246,7 +262,7 @@ app.delete('/users/:Username', passport.authenticate('jwt', { session: false }),
 
 /**
  * GET: Returns a list of ALL movies 
- * Request body: Bearer token
+ * @param {fetchAPI} movies body: Bearer token
  * @returns array of movie objects
  * @requires passport
  */
@@ -264,7 +280,7 @@ app.get('/movies', passport.authenticate('jwt', { session: false }),
 
 /**
  * GET: Returns all data pertaining to a single movie to the user
- * Request body: Bearer token
+ * @param {fetchAPI} movies body: Bearer token
  * @param movieId
  * @returns movie object
  * @requires passport
@@ -282,7 +298,7 @@ app.get('/movies/:Title', passport.authenticate('jwt', { session: false }), (req
 
 /**
  * POST: Allows users to add a movie to their list of favourite movies
- * Request body: Bearer token
+ * @param {fetchAPI} users body: Bearer token
  * @param username
  * @param movieId
  * @returns user object
@@ -306,7 +322,7 @@ app.post('/users/:Username/movies/:MovieID', passport.authenticate('jwt', { sess
 
 /**
  * GET: Returns a list of favourite movies from the user
- * Request body: Bearer token
+ * @param {fetchAPI} users body: Bearer token
  * @param Username
  * @returns array of favourite movies
  * @requires passport
@@ -328,7 +344,7 @@ app.get('/users/:Username/movies', passport.authenticate('jwt', { session: false
 
 /**
  * DELETE: Allows users to remove a movie from their list of favourite movies
- * Request body: Bearer token
+ * @param {fetchAPI} users body: Bearer token
  * @param Username
  * @param movieId
  * @returns user object
@@ -352,7 +368,7 @@ app.delete('/users/:Username/movies/:MovieID', passport.authenticate('jwt', { se
 
 /**
  * GET: Returns data of a particular genre including information like Name, description
- * Request body: Bearer token
+ * @param {fetchAPI} movies body: Bearer token
  * @param Name (Director.Name)
  * @returns director object
  * @requires passport
@@ -370,7 +386,7 @@ app.get('/genre/:Name', passport.authenticate('jwt', { session: false }), (req, 
 
 /**
  * GET: Returns a data about a director by name
- * Request body: Bearer token
+ * @param {fetchAPI} movies body: Bearer token
  * @param Name (Director.Name)
  * @returns director object
  * @requires passport
@@ -389,7 +405,7 @@ app.get('/director/:Name', passport.authenticate('jwt', { session: false }), (re
 
 /**
  * GET: Returns data about a director of a particular movie including bio, birth year, death year
- * Request body: Bearer token
+ * @param {fetchAPI} movies body: Bearer token
  * @param Name (Director.Name)
  * @returns director object
  * @requires passport
@@ -407,7 +423,7 @@ app.get('/movies/director/:Name', passport.authenticate('jwt', { session: false 
 
 /**
  * GET: Returns data about a genre of a particular movie including name and description (e.g: Action)
- * Request body: Bearer token
+ * @param {fetchAPI} movies body: Bearer token
  * @param Name (Genre.Name)
  * @returns genre object
  * @requires passport
@@ -422,12 +438,6 @@ app.get('/movies/genre/:Name', passport.authenticate('jwt', { session: false }),
       res.status(500).send('We couldn\'t find any movies from the genre of' + Genre.Name + err);
     });
 });
-
-/* ******* END OF ENDPOINT DEFINITION ******* 
-************************************************
-************************************************
-*/
-
 
 /**
  * error handler
