@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 /**
  * @file The index file creates the Express api app, sets up the server and implements routes to Api
  * endpoints used to access myFlixDB. Requests are made to these endpoints using mongoose models found in the
@@ -30,13 +31,13 @@ const Users = Models.User;
 
 
 /** 
-* Connecting to MongoDB myFlixDB 
-* a) Connect to Local DB - Enable this to connect the app with local Mongo DB
-*/
+ * Connecting to MongoDB myFlixDB 
+ * a) Connect to Local DB - Enable this to connect the app with local Mongo DB
+ */
 
 /** 
-* const uri = mongoose.connect('mongodb://localhost:27017/myFlixDB', { useNewUrlParser: true, useUnifiedTopology: true });
-*/
+ * const uri = mongoose.connect('mongodb://localhost:27017/myFlixDB', { useNewUrlParser: true, useUnifiedTopology: true });
+ */
 
 /** 
  * b) Connect to Hosted DB - Enable this to connect the app with MongoDB Atlas 
@@ -99,8 +100,9 @@ app.use(express.static('/public'));
 
 /**
  * GET: Takes the user the welcome page displaying a welcome message "/" url
- * @param {*} router 
- * @returns Welcome message
+ *
+ * @param {*} router - to welcome static page
+ * @returns {string} Welcome message
  */
 app.get('/', (req, res) => {
   res.send('Welcome to my Movie app');
@@ -116,6 +118,8 @@ app.get('/documentation', (req, res) => {
 /** 
  * GET: Returns a list of ALL users
  * Request body: Bearer token
+ *
+ * @function endpoint - get all users
  * @returns {Request} array of user objects
  * @requires passport
  */
@@ -132,9 +136,10 @@ app.get('/users', passport.authenticate('jwt', { session: false }), (req, res) =
 
 /**
  * GET: Returns data on one/single user (user object) by username
- * @fetchAPI GET:
- * @param Username
- * @returns {Request} user object
+ *
+ * @function endpoint get a user object
+ * @param {string} Username
+ * @returns {object} user object
  * @requires passport
  */
 app.get('/users/:Username', passport.authenticate('jwt', { session: false }), (req, res) => {
@@ -150,7 +155,8 @@ app.get('/users/:Username', passport.authenticate('jwt', { session: false }), (r
 
 /**
  * POST: Allows users to register/sign up; Username, Password & Email are required fields!
- * @param {fetchAPI} users - body: Bearer token, JSON with user information
+ *
+ * @function endpoint  Register a user
  * @returns {Request}
  */
 app.post('/users',
@@ -196,7 +202,9 @@ app.post('/users',
 
 /**
  * PUT: Allow users to update their user details 
- * @param {fetchAPI} users body: Bearer token, updated user info
+ * body: Bearer token, updated user info
+ *
+ * @function endpoint - update a user's account 
  * @param Username
  * @returns {Request}
  * @requires passport
@@ -239,8 +247,10 @@ app.put('/users/:Username', passport.authenticate('jwt', { session: false }),
   });
 
 /**
- * DELETE: Allows users to delete their account - derigister
- * @param {fetchAPI} users - body: Bearer token
+ * DELETE: Allows users to delete their account - deregister
+ * body: Bearer token
+ *
+ * @function endpoint delete a user (deregister)
  * @param Username
  * @returns {Request}
  * @requires passport
@@ -262,7 +272,9 @@ app.delete('/users/:Username', passport.authenticate('jwt', { session: false }),
 
 /**
  * GET: Returns a list of ALL movies 
- * @param {fetchAPI} movies body: Bearer token
+ * body: Bearer token
+ *
+ * @function endpoint get all movies
  * @returns {Request}
  * @requires passport
  */
@@ -278,9 +290,12 @@ app.get('/movies', passport.authenticate('jwt', { session: false }),
       });
   });
 
+
 /**
  * GET: Returns all data pertaining to a single movie to the user
- * @param {fetchAPI} movies body: Bearer token
+ * body: Bearer token
+ *
+ * @function endpoint - get a movie (one movie)
  * @param movieId
  * @returns {Request}
  * @requires passport
@@ -298,7 +313,9 @@ app.get('/movies/:Title', passport.authenticate('jwt', { session: false }), (req
 
 /**
  * POST: Allows users to add a movie to their list of favourite movies
- * @param {fetchAPI} users body: Bearer token
+ * body: Bearer token
+ *
+ * @function endpoint add a movie to a users list of favourite movies 
  * @param username
  * @param movieId
  * @returns {Request}
@@ -322,7 +339,9 @@ app.post('/users/:Username/movies/:MovieID', passport.authenticate('jwt', { sess
 
 /**
  * GET: Returns a list of favourite movies from the user
- * @param {fetchAPI} users body: Bearer token
+ * body: Bearer token
+ *
+ * @function endpoint get a user's list of favourite movies
  * @param Username
  * @returns {Request}
  * @requires passport
@@ -334,7 +353,7 @@ app.get('/users/:Username/movies', passport.authenticate('jwt', { session: false
         res.status(200).json(user.FavouriteMovies);
       } else {
         res.status(400).send('Could not find favourite movies for this user');
-      };
+      }
     })
     .catch((err) => {
       console.error(err);
@@ -344,7 +363,9 @@ app.get('/users/:Username/movies', passport.authenticate('jwt', { session: false
 
 /**
  * DELETE: Allows users to remove a movie from their list of favourite movies
- * @param {fetchAPI} users body: Bearer token
+ * body: Bearer token
+ *
+ * @function endpoint delete a movie from a user's list of favourite movies  
  * @param Username
  * @param movieId
  * @returns {Request}
@@ -367,8 +388,10 @@ app.delete('/users/:Username/movies/:MovieID', passport.authenticate('jwt', { se
 });
 
 /**
- * GET: Returns data of a particular genre including information like Name, description
- * @param {fetchAPI} movies body: Bearer token
+ * GET: Returns data on all movies of a particular Genre (e.g: Action)
+ * body: Bearer token
+ *
+ * @function endpoint get all movies from a genre (e:g all movies from the action genre)
  * @param Name (Director.Name)
  * @returns {Request}
  * @requires passport
@@ -385,8 +408,10 @@ app.get('/genre/:Name', passport.authenticate('jwt', { session: false }), (req, 
 });
 
 /**
- * GET: Returns a data about a director by name
- * @param {fetchAPI} movies body: Bearer token
+ * GET: Returns data about a director including bio, birth year, death year
+ * body: Bearer token
+ *
+ * @function endpoint get director information 
  * @param Name (Director.Name)
  * @returns {Request}
  * @requires passport
@@ -404,8 +429,10 @@ app.get('/director/:Name', passport.authenticate('jwt', { session: false }), (re
 
 
 /**
- * GET: Returns data about a director of a particular movie including bio, birth year, death year
- * @param {fetchAPI} movies body: Bearer token
+ * GET: Returns a data about a director by name
+ * body: Bearer token
+ *
+ * @function endpoint get director information for a particular movie 
  * @param Name (Director.Name)
  * @returns {Request}
  * @requires passport
@@ -422,8 +449,10 @@ app.get('/movies/director/:Name', passport.authenticate('jwt', { session: false 
 });
 
 /**
- * GET: Returns data about a genre of a particular movie including name and description (e.g: Action)
- * @param {fetchAPI} movies body: Bearer token
+ * GET: Returns data about a genre of a particular movie including name and description (e.g: the genre of Avengers)
+ * body: Bearer token
+ *
+ * @function endpoint get genre information of a particular movie
  * @param Name (Genre.Name)
  * @returns {Request}
  * @requires passport

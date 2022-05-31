@@ -4,10 +4,10 @@
  * to Api endpoints to read, update, create and delete these documents from my database. Mongoose is
  * connected to the database using the connect method in the index file.
  * @requires mongoose Connects the app to the database and implements data schemas using models.
- * @requires bcrypt This is  used to implement secutiry and encryption on user passwords.
-*/
+ * @requires bcrypt This is  used to implement security and encryption on user passwords.
+ */
 
-// requiring mongoose, bycript
+// requiring mongoose, bcrypt
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 
@@ -37,17 +37,32 @@ let userSchema = mongoose.Schema({
     FavouriteMovies: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Movie' }]
 });
 
-/** use bcript to hash passwords */
+/**
+ * use bcrypt to hash passwords
+ *
+ * @param {string} password - hashing password
+ * @returns {password} - returns hashed password
+ */
 userSchema.statics.hashPassword = (password) => {
     return bcrypt.hashSync(password, 8);
 };
 
-/** validate passowrds */
+/**
+ * validate passwords
+ *
+ * @param {string} password compares password provided by user to the saved password 
+ * @returns {boolean } returns true if passwords match and false if not
+ */
 userSchema.methods.validatePassword = function (password) {
     return bcrypt.compareSync(password, this.Password);
 };
 
-/** populating the users favouriteMovies array */
+/**
+ * populating the users favouriteMovies array
+ *
+ * @param {string} Username - takes username
+ * @returns {Request} - populated favourite movies object
+ */
 function addFavouriteMovies(Username) {
     return User.findOne({ Username: Username })
         .populate('movies').exec((err, Users) => {

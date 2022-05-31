@@ -32,10 +32,10 @@
  * to Api endpoints to read, update, create and delete these documents from my database. Mongoose is
  * connected to the database using the connect method in the index file.
  * @requires mongoose Connects the app to the database and implements data schemas using models.
- * @requires bcrypt This is  used to implement secutiry and encryption on user passwords.
-*/
+ * @requires bcrypt This is  used to implement security and encryption on user passwords.
+ */
 
-// requiring mongoose, bycript
+// requiring mongoose, bcrypt
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 
@@ -65,17 +65,32 @@ let userSchema = mongoose.Schema({
     FavouriteMovies: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Movie' }]
 });
 
-/** use bcript to hash passwords */
+/**
+ * use bcrypt to hash passwords
+ *
+ * @param {string} password - hashing password
+ * @returns {password} - returns hashed password
+ */
 userSchema.statics.hashPassword = (password) => {
     return bcrypt.hashSync(password, 8);
 };
 
-/** validate passowrds */
+/**
+ * validate passwords
+ *
+ * @param {string} password compares password provided by user to the saved password 
+ * @returns {boolean } returns true if passwords match and false if not
+ */
 userSchema.methods.validatePassword = function (password) {
     return bcrypt.compareSync(password, this.Password);
 };
 
-/** populating the users favouriteMovies array */
+/**
+ * populating the users favouriteMovies array
+ *
+ * @param {string} Username - takes username
+ * @returns {Request} - populated favourite movies object
+ */
 function addFavouriteMovies(Username) {
     return User.findOne({ Username: Username })
         .populate('movies').exec((err, Users) => {
@@ -100,13 +115,13 @@ module.exports.User = User;</code></pre>
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#addFavouriteMovies">addFavouriteMovies</a></li><li><a href="global.html#app">app</a></li><li><a href="global.html#auth">auth</a></li><li><a href="global.html#connectDB">connectDB</a></li><li><a href="global.html#cors">cors</a></li><li><a href="global.html#generateJWTToken">generateJWTToken</a></li><li><a href="global.html#Movie">Movie</a></li><li><a href="global.html#movieSchema">movieSchema</a></li><li><a href="global.html#passport">passport</a></li><li><a href="global.html#port">port</a></li><li><a href="global.html#uri">uri</a></li><li><a href="global.html#userSchema">userSchema</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#addFavouriteMovies">addFavouriteMovies</a></li><li><a href="global.html#app">app</a></li><li><a href="global.html#auth">auth</a></li><li><a href="global.html#connectDB">connectDB</a></li><li><a href="global.html#cors">cors</a></li><li><a href="global.html#endpointRegisterauser">endpoint  Register a user</a></li><li><a href="global.html#endpoint-getamovieonemovie">endpoint - get a movie </a></li><li><a href="global.html#endpoint-getallusers">endpoint - get all users</a></li><li><a href="global.html#endpoint-updateauser'saccount">endpoint - update a user's account</a></li><li><a href="global.html#endpointaddamovietoauserslistoffavouritemovies">endpoint add a movie to a users list of favourite movies</a></li><li><a href="global.html#endpointdeleteamoviefromauser'slistoffavouritemovies">endpoint delete a movie from a user's list of favourite movies</a></li><li><a href="global.html#endpointdeleteauserderegister">endpoint delete a user </a></li><li><a href="global.html#endpointgetauserobject">endpoint get a user object</a></li><li><a href="global.html#endpointgetauser'slistoffavouritemovies">endpoint get a user's list of favourite movies</a></li><li><a href="global.html#endpointgetallmovies">endpoint get all movies</a></li><li><a href="global.html#endpointgetallmoviesfromagenree:gallmoviesfromtheactiongenre">endpoint get all movies from a genre </a></li><li><a href="global.html#endpointgetdirectorinformation">endpoint get director information</a></li><li><a href="global.html#endpointgetdirectorinformationforaparticularmovie">endpoint get director information for a particular movie</a></li><li><a href="global.html#endpointgetgenreinformationofaparticularmovie">endpoint get genre information of a particular movie</a></li><li><a href="global.html#endpointusethegeneratedjwt%2560generateJWTToken%2560fromtologuserin">endpoint use the generated jwt `generateJWTToken` from to log user in</a></li><li><a href="global.html#generateJWTToken-generateJWTToken">generateJWTToken - generate JWT Token</a></li><li><a href="global.html#Movie">Movie</a></li><li><a href="global.html#movieSchema">movieSchema</a></li><li><a href="global.html#passport">passport</a></li><li><a href="global.html#port">port</a></li><li><a href="global.html#uri">uri</a></li><li><a href="global.html#userSchema">userSchema</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.10</a> on Mon May 30 2022 17:37:20 GMT+0200 (Central European Summer Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.10</a> on Tue May 31 2022 14:55:04 GMT+0200 (Central European Summer Time)
 </footer>
 
 <script> prettyPrint(); </script>

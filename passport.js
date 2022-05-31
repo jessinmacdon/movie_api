@@ -2,15 +2,13 @@
  * @file the aim of this file is to implement 2 passport strategies that will be used to authenticate requests
  * to the overall API endpoints. When the user logs in our app, this will function as a validation method for the username and password
  * and compare them to our users collection in the database area.
- * The JWT strategy is also used, this will decode the Web Token returned to the user after having a successfull login, after it will check the user ID, and if it matches
+ * The JWT strategy is also used, this will decode the Web Token returned to the user after having successfully login, after it will check the user ID, and if it matches
  * the user collection in the database.
- *
  * @requires passport-local This was used to create a local strategy
  * @requires passport For authentication and validation to the requests over the API endpoints
  * @requires passport-jwt To extract tokens from the requests
  * @requires '.models.js' This is where we defined our models and schemas
- *
- **/
+ */
 
 
 // requiring passport

@@ -200,7 +200,7 @@ https://macdon-myflix.herokuapp.com/
 * change port
 * create Heroku app
 * create mongodb instance on MongoDBAtlas
-* export MongoDB database with mongodump (each collection as json, without commas between documents, not arrays)
+* export MongoDB database (each collection as json, without commas between documents, not arrays)
 
 * push Git main to Heroku
 ```
@@ -213,7 +213,4 @@ git push heroku main
 * add version of node.js (16.14.2) to package.json,
 * change HEROKU version from 20 to 18
 * remove programming/ code errors (reference HEROKU documentation)
-
-
-
 
